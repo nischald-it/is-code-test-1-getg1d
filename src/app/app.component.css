@@ -1,3 +1,31 @@
 p {
   font-family: Lato;
 }
+
+.main-content-div {
+  height: calc(100vh - 150px - 20px);
+  overflow:scroll;
+
+}
+
+.main-header {
+  height: 100px;
+}
+.main-footer {
+  height: 50px;
+  opacity: .5;
+  text-align:center;
+  font-style: italic;
+  font-weight: lighter;
+}
+
+/* .sticky {
+  /* height: 64px;
+  opacity: 1;
+  transition: opacity .25s ease-out, height .15s ease; */
+  /* opacity: .50; */
+  /* position: fixed;
+  bottom: 0; */
+  /* vertical-align: bottom; */
+ 
+/* }  */

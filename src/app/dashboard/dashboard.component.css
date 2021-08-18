@@ -1,0 +1,28 @@
+table {
+    width: 100%;
+  }
+
+  /* .mat-icon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    height: 12px;
+    width: 12px;
+    } */
+
+    /* .mat-column-delete {
+        width: 5% !important; 
+        background-color: red;
+    } */
+
+    .mat-column-name {
+        width: 70%;
+    }
+
+    button {
+        margin: 10px;        
+    }
+
+    ::ng-deep .mat-tooltip {
+        font-size: 15px;
+    }
