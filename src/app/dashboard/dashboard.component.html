@@ -36,7 +36,7 @@
         </td>
     </ng-container> 
   
-    <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]="mat-table-header"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]="'mat-table-header'"></tr>
     <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'mat-table-even-row': even}"></tr>
   </table>
 
