@@ -2,6 +2,12 @@ table {
     width: 100%;
   }
 
+  .mat-form-field {
+    font-size: 14px;
+    width: calc(100% - 10px);
+  }
+
+
   /* .mat-icon {
     background-repeat: no-repeat;
     display: inline-block;

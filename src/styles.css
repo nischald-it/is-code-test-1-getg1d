@@ -12,8 +12,12 @@
   
   .mat-header-cell {
     font-weight: bold;
-    font-size: medium;
-    color: #eb5834;
+    font-size: large;
+    color: darkblue;
+    /* color: #eb5834; */
     /* text-align: center !important; */
+  }
+  .mat-header-row {
+    background-color:lightsteelblue;
   }
 

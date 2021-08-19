@@ -6,6 +6,11 @@ import {MatPaginator} from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
+import { select, Store } from '@ngrx/store';
+import { ApplicationState, VehiclesState } from '../store/states/application-state';
+import { LoadVehiclesAction } from '../store/actions';
+import { Vehicle } from '../models/vehicle.model';
+import { vehiclesSelector } from '../store/selectors/all-selectors';
 
 export interface PeriodicElement {
   name: string;
@@ -15,17 +20,17 @@ export interface PeriodicElement {
 }
 
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {id: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {id: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {id: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {id: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {id: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {id: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {id: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {id: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {id: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {id: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+const ELEMENT_DATA: Vehicle[] = [
+  {id: 1, name: 'Hydrogen'},
+  {id: 2, name: 'Helium'},
+  {id: 3, name: 'Lithium'},
+  {id: 4, name: 'Beryllium'},
+  {id: 5, name: 'Boron'},
+  {id: 6, name: 'Carbon'},
+  {id: 7, name: 'Nitrogen'},
+  {id: 8, name: 'Oxygen'},
+  {id: 9, name: 'Fluorine'},
+  {id: 10, name: 'Neon'},
 ];
 
 @Component({
@@ -37,20 +42,39 @@ export class DashboardComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  vahicles$: Observable<VehiclesState>;
   
-  constructor(private dataService: DataService) { }
+  constructor(private data: DataService, private store: Store<ApplicationState> ) { }
   displayedColumns: string[] = ['id', 'name', 'EditDelete'];
   dataToDisplay = [...ELEMENT_DATA];
 
   //dataSource = new ExampleDataSource(this.dataToDisplay);
 
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-
+  dataSource = new MatTableDataSource<Vehicle>(ELEMENT_DATA);
+  getVehicles(): Observable<Vehicle[]> {
+    return this.data.get<Vehicle[]>("vehicles");
+  }
   ngOnInit(): void {
+    this.getVehicles().subscribe((v) => {
+      this.store.dispatch(new LoadVehiclesAction(v));
+    }); 
+    
+    this.vahicles$ = this.store.pipe(select(vehiclesSelector));
+
+    this.vahicles$.subscribe((data: VehiclesState) => {
+      this.dataSource = new MatTableDataSource<Vehicle>(data.vehicles);
+
+    })
+   
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }
