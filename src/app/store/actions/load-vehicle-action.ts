@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { Vehicle } from "src/app/models/vehicle.model";
+import { Vehicle } from "../../../../src/app/models/vehicle.model";
 
 export const LOAD_VEHICLES = 'LOAD_VEHICLE';
 

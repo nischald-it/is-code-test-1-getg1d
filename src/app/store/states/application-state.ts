@@ -1,4 +1,4 @@
-import { Vehicle } from "src/app/models/vehicle.model";
+import { Vehicle } from "../../../../src/app/models/vehicle.model";
 
 export interface ApplicationState {
     vehiclesState: VehiclesState;
