@@ -1,0 +1,34 @@
+table {
+    width: 100%;
+  }
+
+  .mat-form-field {
+    font-size: 14px;
+    width: calc(100% - 10px);
+  }
+
+
+  /* .mat-icon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    height: 12px;
+    width: 12px;
+    } */
+
+    /* .mat-column-delete {
+        width: 5% !important; 
+        background-color: red;
+    } */
+
+    .mat-column-name {
+        width: 70%;
+    }
+
+    button {
+        margin: 10px;        
+    }
+
+    ::ng-deep .mat-tooltip {
+        font-size: 15px;
+    }
