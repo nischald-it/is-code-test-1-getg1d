@@ -6,7 +6,8 @@ import { VehicleListComponent } from '../vehicles/vehicle-list.component';
 
 const routes: Routes = [
   {path: "assignments", component: AssignmentListComponent},
-  {path: "vehicles", component: VehicleListComponent}
+  {path: "vehicles", component: VehicleListComponent},
+  { path: '',   redirectTo: '/assignments', pathMatch: 'full' },
 ];
 
 @NgModule({
