@@ -8,7 +8,7 @@ import { VehicleListComponent } from './vehicles/vehicle-list.component';
 import { AppRoutingModule } from "./app-routing/app-routing.module";
 import { APP_BASE_HREF, CommonModule } from "@angular/common";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from "./store/reducers";
@@ -25,8 +25,9 @@ import { AssignmentAddDialogComponent } from "./assignments/assignment-add-dialo
   imports: [BrowserModule, CommonModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, MaterialModule,
     ReactiveFormsModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([VehicleEffects, AssignmentEffects, CameraEffects]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }) 
+    EffectsModule.forRoot([VehicleEffects, AssignmentEffects, CameraEffects])
+    // ,
+    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }) 
     ],
   providers:[{provide: APP_BASE_HREF, useValue: '/'}],
   entryComponents: [AssignmentDeleteDialogComponent, AssignmentAddDialogComponent],
