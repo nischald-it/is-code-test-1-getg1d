@@ -12,6 +12,7 @@ import { AllVehicleRequested, VehicleSaved } from '../store/actions/vehicle.acti
 import { Vehicle } from '../models/vehicle.model';
 import { selectAllVehicles } from '../store/selectors/vehicle.selectors';
 import { Update } from '@ngrx/entity';
+import { Router } from '@angular/router';
 
 export interface PeriodicElement {
   name: string;
@@ -45,7 +46,7 @@ export class VehicleListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   vehicles$: Observable<Vehicle[]>;
   
-  constructor(private store: Store<ApplicationState> ) { }
+  constructor(private store: Store<ApplicationState> , private router: Router) { }
   displayedColumns: string[] = ['id', 'name', 'EditDelete'];
   dataSource : MatTableDataSource<Vehicle>;
   filterValue: string;
@@ -121,6 +122,9 @@ export class VehicleListComponent implements OnInit {
     }
     
   }
+  goToAssignments() {
+    this.router.navigateByUrl("/assignments");
+  }
 
 }
 
@@ -142,4 +146,6 @@ class ExampleDataSource extends DataSource<PeriodicElement> {
   setData(data: PeriodicElement[]) {
     this._dataStream.next(data);
   }
+
+
 }

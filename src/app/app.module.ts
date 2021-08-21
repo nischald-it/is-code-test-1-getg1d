@@ -20,6 +20,8 @@ import { CameraEffects } from "./store/effects/camera.effects";
 import { AssignmentDeleteDialogComponent } from "./assignments/assignment-delete-dialog.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import { AssignmentAddDialogComponent } from "./assignments/assignment-add-dialog.component";
+import { NavigationComponent } from "./navigation.component";
+import { VehicleDeleteDialogComponent } from './vehicles/vehicle-delete-dialog/vehicle-delete-dialog.component';
 
 @NgModule({
   imports: [BrowserModule, CommonModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, MaterialModule,
@@ -31,7 +33,7 @@ import { AssignmentAddDialogComponent } from "./assignments/assignment-add-dialo
     ],
   providers:[{provide: APP_BASE_HREF, useValue: '/'}],
   entryComponents: [AssignmentDeleteDialogComponent, AssignmentAddDialogComponent],
-  declarations: [AppComponent, VehicleListComponent, AssignmentListComponent,AssignmentDeleteDialogComponent, AssignmentAddDialogComponent],
+  declarations: [AppComponent, NavigationComponent, VehicleListComponent, AssignmentListComponent,AssignmentDeleteDialogComponent, AssignmentAddDialogComponent, VehicleDeleteDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
