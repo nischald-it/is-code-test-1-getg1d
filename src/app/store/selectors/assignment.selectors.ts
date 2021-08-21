@@ -2,7 +2,6 @@ import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { AssignmentsState } from "../states/application-state";
 
 import * as fromAssignment from '../reducers/assignment.reducers';
-import { AssignmentListComponent } from "src/app/assignments/assignment-list.component";
 
 export const selectAssignmentState = createFeatureSelector<AssignmentsState>('assignmentsState');
 export const getAssignmentsStateInfo = (state: AssignmentsState) => state.entities;

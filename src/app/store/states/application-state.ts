@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
-import { Camera } from "src/app/models/camera.model";
+import { Camera } from "../../models/camera.model";
 import { Assignment, AssignmentResponse } from "../../models/assignment.model";
 import { Vehicle } from "../../models/vehicle.model";
 
