@@ -42,9 +42,11 @@ export class VehicleListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((vehicles: Vehicle[]) => {
         this.nextId = Math.max(...vehicles.map(v => v.id)) + 1;
+        let currentFilter = this.getFilter();
         this.dataSource = new MatTableDataSource<Vehicle>(vehicles);
         this.setPaginator();
         this.setSort();
+        this.setFilter(currentFilter);
       })
 
   }
@@ -68,6 +70,14 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     let filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  getFilter() {
+    return this.dataSource.filter;
+  }
+  setFilter(currentFilter) {
+    this.dataSource.filter = currentFilter.trim().toLowerCase();
+  }
+
 
   onAddVehicle() {
     const dialogConfig = new MatDialogConfig();

@@ -12,7 +12,7 @@ import { StoreService } from '../app/services/store.service';
   providedIn: 'root'
 })
 export class StoreDataResolver implements Resolve<boolean> {
-  constructor(private storeService: StoreService) {}
+  constructor(private storeService: StoreService) { }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     this.storeService.perpareStore();
     return of(true);
