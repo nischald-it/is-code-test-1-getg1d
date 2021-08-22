@@ -18,7 +18,7 @@ const routes: Routes = [
     { path: '',   redirectTo: '/assignments', pathMatch: 'full' },
   ],
   resolve: {result: StoreDataResolver}},
-  { path: '',   redirectTo: '/admin', pathMatch: 'full' },
+  { path: '',   redirectTo: '/admin/assignments', pathMatch: 'full' },
   {path: "**", redirectTo: '/admin/assignments', pathMatch: 'full' }
 ];
 
