@@ -1,0 +1,89 @@
+
+<h2 mat-dialog-title  class="d-flex justify-content-around">{{description}}</h2>
+<mat-card>
+    <mat-dialog-content [formGroup]="form" class="d-flex justify-content-around">
+
+
+        <mat-form-field>
+    
+            <mat-select placeholder="Select Vehicle"
+                formControlName="vehicle">
+                <mat-option *ngFor="let vehicle of availableVehicles" value="{{vehicle.id}}">
+                    {{vehicle.name}}
+                </mat-option>   
+  
+            </mat-select>
+    
+        </mat-form-field>
+
+        <mat-form-field>
+    
+            <mat-select placeholder="Select Camera"
+                formControlName="camera">
+                <mat-option *ngFor="let camera of availableCameras" value="{{camera.id}}">
+                    {{camera.deviceNo}}
+                </mat-option>   
+  
+            </mat-select>
+    
+        </mat-form-field>
+    
+        <!-- <mat-form-field>
+    
+            <input matInput
+                    placeholder="Course Description"
+                   formControlName="description">
+    
+        </mat-form-field>
+    
+        <mat-form-field>
+    
+            <mat-select placeholder="Select category"
+                formControlName="category">
+    
+                <mat-option value="BEGINNER">
+                    Beginner</mat-option>
+                <mat-option value="INTERMEDIATE">
+                    Intermediate</mat-option>
+                <mat-option value="ADVANCED">
+                    Advanced</mat-option>
+    
+            </mat-select>
+    
+        </mat-form-field>
+    
+        <mat-slide-toggle formControlName="promo">Promotion On</mat-slide-toggle>
+    
+    
+        <mat-form-field>
+    
+            <textarea matInput placeholder="Description"
+                formControlName="longDescription">
+    
+            </textarea>
+    
+        </mat-form-field> -->
+    
+    
+    </mat-dialog-content>
+</mat-card>
+
+
+<mat-dialog-actions class="d-flex justify-content-around">
+
+    <button class="mat-raised-button"
+            (click)="close()">
+        Close
+    </button>
+
+    <button class="mat-raised-button mat-primary" [disabled]="!form.valid"
+            (click)="save()">
+        Save
+    </button>
+
+</mat-dialog-actions>
+
+
+
+
+

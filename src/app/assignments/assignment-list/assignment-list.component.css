@@ -1,0 +1,30 @@
+table {
+    width: 100%;
+  }
+
+  /* .mat-form-field {
+    font-size: 14px;
+    width: calc(100% - 10px);
+  } */
+
+  .filter {
+    font-size: 14px;
+    width: calc(100% - 10px);
+    padding: 10px;
+  }
+
+    .mat-column-vehicleName {
+        width: 40%;
+    }
+    .mat-column-deviceNo {
+      width: 40%;
+  }
+
+
+    button {
+        margin: 10px;        
+    }
+
+    ::ng-deep .mat-tooltip {
+        font-size: 15px;
+    }

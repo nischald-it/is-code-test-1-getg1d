@@ -1,0 +1,24 @@
+<h2 mat-dialog-title class="d-flex justify-content-around">{{description}}</h2>
+
+<mat-card>
+    <b>It will unassign </b><br><br>
+    <b>camera:</b> <i>'{{deviveNo}}'</i>
+    <br><br><b>from</b><br><br>
+    <b>vehicle:</b><i>'{{vehicleName}}'.</i>
+    <br>
+    <br>
+    <b>Are you sure?</b>
+
+</mat-card>
+
+<mat-dialog-actions class="d-flex justify-content-around">
+
+    <button class="mat-raised-button mat-warn" (click)="onDelet()">
+        Confirm
+    </button>
+
+    <button class="mat-raised-button mat-primary" (click)="onCancel()">
+        Cancel
+    </button>
+
+</mat-dialog-actions>

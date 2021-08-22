@@ -1,0 +1,25 @@
+<h2 mat-dialog-title class="d-flex justify-content-around">{{description}}</h2>
+<mat-card>
+    <mat-dialog-content [formGroup]="form" class="d-flex justify-content-around">
+
+        <mat-form-field style="width: 80%">
+
+            <input matInput placeholder="Vehicle Name" formControlName="vehicleName">
+
+        </mat-form-field>
+
+    </mat-dialog-content>
+</mat-card>
+
+
+<mat-dialog-actions class="d-flex justify-content-around">
+
+    <button class="mat-raised-button" (click)="close()">
+        Close
+    </button>
+
+    <button class="mat-raised-button mat-primary" [disabled]="!form.valid" (click)="save()">
+        Save
+    </button>
+
+</mat-dialog-actions>
