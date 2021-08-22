@@ -8,20 +8,6 @@ table {
     padding: 10px;
   }
 
-
-  /* .mat-icon {
-    background-repeat: no-repeat;
-    display: inline-block;
-    fill: currentColor;
-    height: 12px;
-    width: 12px;
-    } */
-
-    /* .mat-column-delete {
-        width: 5% !important; 
-        background-color: red;
-    } */
-
     .mat-column-deviceNo {
         width: 70%;
     }

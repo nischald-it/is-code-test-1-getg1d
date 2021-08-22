@@ -6,8 +6,7 @@ import { AppComponent } from "./app.component";
 import { MaterialModule } from "./material/material.module";
 import { AppRoutingModule } from "./app-routing/app-routing.module";
 import { APP_BASE_HREF, CommonModule } from "@angular/common";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from "./store/reducers";
@@ -15,7 +14,7 @@ import { EffectsModule } from "@ngrx/effects";
 import { VehicleEffects } from "./store/effects/vehicle.effects";
 import { AssignmentEffects } from "./store/effects/assignment.effects";
 import { CameraEffects } from "./store/effects/camera.effects";
-import {ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { NavigationComponent } from "./navigation.component";
 import { VehicleAddDialogComponent } from './vehicles/vehicle-add-dialog/vehicle-add-dialog.component';
 import { AdminComponent } from './admin/admin.component';
@@ -31,12 +30,10 @@ import { CameraAddDialogComponent } from './camera/camera-add-dialog/camera-add-
     ReactiveFormsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([VehicleEffects, AssignmentEffects, CameraEffects])
-    // ,
-    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }) 
-    ],
-  providers:[{provide: APP_BASE_HREF, useValue: '/'}],
+  ],
+  providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
   entryComponents: [AssignmentDeleteDialogComponent, AssignmentAddDialogComponent, VehicleAddDialogComponent, CameraAddDialogComponent],
-  declarations: [AppComponent, NavigationComponent, VehicleListComponent, AssignmentListComponent,AssignmentDeleteDialogComponent, AssignmentAddDialogComponent, VehicleAddDialogComponent, AdminComponent, CameraListComponent, CameraAddDialogComponent],
+  declarations: [AppComponent, NavigationComponent, VehicleListComponent, AssignmentListComponent, AssignmentDeleteDialogComponent, AssignmentAddDialogComponent, VehicleAddDialogComponent, AdminComponent, CameraListComponent, CameraAddDialogComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
