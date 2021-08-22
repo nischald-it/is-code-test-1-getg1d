@@ -2,10 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { Vehicle } from 'src/app/models/vehicle.model';
-import { DataService } from 'src/app/services/data.service';
-import { VehicleSaved } from 'src/app/store/actions/vehicle.actions.index';
-import { ApplicationState } from 'src/app/store/states/application-state';
+import { Vehicle } from '../..//models/vehicle.model';
+import { DataService } from '../../services/data.service';
+import { VehicleSaved } from '../../store/actions/vehicle.actions.index';
+import { ApplicationState } from '../../store/states/application-state';
 
 @Component({
   selector: 'app-vehicle-add-dialog',

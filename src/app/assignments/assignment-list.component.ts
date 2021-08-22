@@ -24,7 +24,7 @@ import { selectAllCameras } from '../store/selectors/camera.selectors';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AssignmentDeleteDialogComponent } from './assignment-delete-dialog.component';
 import { AssignmentAddDialogComponent } from './assignment-add-dialog.component';
-import * as _ from 'lodash';
+
 
 export interface PeriodicElement {
   name: string;
