@@ -1,18 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import {MatPaginator} from '@angular/material/paginator';
+import { Subject } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { select, Store } from '@ngrx/store';
-import { ApplicationState } from '../store/states/application-state';
-import { AllVehicleRequested } from '../store/actions/vehicle.actions.index';
 import { Vehicle } from '../models/vehicle.model';
-import { selectAllVehicles } from '../store/selectors/vehicle.selectors';
 import { Router } from '@angular/router';
-import {  takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { VehicleAddDialogComponent } from './vehicle-add-dialog/vehicle-add-dialog.component';
+import { StoreService } from '../services/store.service';
 
 export interface PeriodicElement {
   name: string;
@@ -30,29 +27,25 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  vehicles$: Observable<Vehicle[]>;
   destroy$: Subject<boolean> = new Subject<boolean>();
-  
-  constructor(private store: Store<ApplicationState> , private router: Router, private dialog: MatDialog) { }
+
+  constructor(private storeService: StoreService, private router: Router, private dialog: MatDialog) { }
+
   displayedColumns: string[] = ['id', 'name', 'EditDelete'];
-  dataSource : MatTableDataSource<Vehicle> = new MatTableDataSource<Vehicle>();
+  dataSource: MatTableDataSource<Vehicle> = new MatTableDataSource<Vehicle>();
   filterValue: string;
   nextId: number;
 
   ngOnInit(): void {
 
-    
-    this.store.dispatch(new AllVehicleRequested());  
-    this.vehicles$ = this.store.pipe(select(selectAllVehicles));
-
-    this.vehicles$
-     .pipe(takeUntil(this.destroy$))
-     .subscribe((vehicles: Vehicle[]) => {
-      this.nextId = Math.max(...vehicles.map(v => v.id)) + 1;
-      this.dataSource = new MatTableDataSource<Vehicle>(vehicles);
-      this.setPaginator();
-      this.setSort();
-    })  
+    this.storeService.getAllVehicles()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((vehicles: Vehicle[]) => {
+        this.nextId = Math.max(...vehicles.map(v => v.id)) + 1;
+        this.dataSource = new MatTableDataSource<Vehicle>(vehicles);
+        this.setPaginator();
+        this.setSort();
+      })
 
   }
   ngAfterViewInit() {
@@ -60,14 +53,14 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.setSort();
   }
   setPaginator() {
-    if(this.dataSource && this.paginator) {
+    if (this.dataSource && this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
   }
   setSort() {
-    if(this.dataSource && this.sort) {
+    if (this.dataSource && this.sort) {
       this.dataSource.sort = this.sort;
-    }   
+    }
   }
 
 
@@ -78,17 +71,17 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
   onAddVehicle() {
     const dialogConfig = new MatDialogConfig();
-  
+
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '800px';
 
-    dialogConfig.data =  this.nextId;
-  
- 
+    dialogConfig.data = this.nextId;
+
+
     const dialogRef = this.dialog.open(VehicleAddDialogComponent,
-        dialogConfig);
-  
+      dialogConfig);
+
   }
 
   ngOnDestroy() {

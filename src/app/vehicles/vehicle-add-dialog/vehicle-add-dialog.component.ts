@@ -1,11 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
+import { DataManagementService } from 'src/app/services/data-management.service';
+import { StoreService } from 'src/app/services/store.service';
 import { Vehicle } from '../..//models/vehicle.model';
-import { DataService } from '../../services/data.service';
-import { VehicleSaved } from '../../store/actions/vehicle.actions.index';
-import { ApplicationState } from '../../store/states/application-state';
+
 
 @Component({
   selector: 'app-vehicle-add-dialog',
@@ -16,45 +15,41 @@ export class VehicleAddDialogComponent implements OnInit {
   form: FormGroup;
   description: string = "Add Vehicle";
   vehicleId: number = null;
-  constructor( private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
     private dialogRef: MatDialogRef<VehicleAddDialogComponent>,
-    private data: DataService,
-    private store: Store<ApplicationState> ,
-    @Inject(MAT_DIALOG_DATA) id:number) {
+    private dataManagementService: DataManagementService,
+    private storeService: StoreService,
+    @Inject(MAT_DIALOG_DATA) id: number) {
 
-      this.vehicleId = id;
-     }
+    this.vehicleId = id;
+  }
 
   ngOnInit(): void {
 
     this.form = this.fb.group({
       vehicleName: [null, Validators.required]
-  });
+    });
   }
 
   close() {
     this.dialogRef.close();
-   }
+  }
 
-   save(){
+  save() {
     const formValue = this.form.value;
 
-    const vehicle: Vehicle =   {
-        id: this.vehicleId,
-        name: formValue.vehicleName,
-        cameraId: null
+    const vehicle: Vehicle = {
+      id: this.vehicleId,
+      name: formValue.vehicleName,
+      cameraId: null
 
     };
-    
-    this.data.post("vehicles/:id", { id: this.vehicleId }, { name: formValue.vehicleName, cameraId: null })
-    .subscribe(
-        () => {     
-            this.store.dispatch(new VehicleSaved({vehicle}));
-            this.dialogRef.close();
+
+    this.dataManagementService.addVehicle(this.vehicleId, formValue.vehicleName)
+      .subscribe(
+        () => {
+          this.storeService.SaveVehicle(vehicle)
+          this.dialogRef.close();
         });
-}
-
-
-
-
+  }
 }
