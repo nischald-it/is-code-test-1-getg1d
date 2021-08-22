@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StoreDataResolver } from 'src/resolver/store-data.resolver';
+import { StoreDataResolver } from '../../resolver/store-data.resolver';
 import { AdminComponent } from '../admin/admin.component';
 import { AssignmentListComponent } from '../assignments/assignment-list/assignment-list.component';
 import { CameraListComponent } from '../camera/camera-list/camera-list.component';

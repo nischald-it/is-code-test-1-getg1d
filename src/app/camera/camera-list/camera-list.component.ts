@@ -6,8 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Camera } from 'src/app/models/camera.model';
-import { StoreService } from 'src/app/services/store.service';
+import { Camera } from '../../models/camera.model';
+import { StoreService } from '../../services/store.service';
 import { CameraAddDialogComponent } from '../camera-add-dialog/camera-add-dialog.component';
 
 @Component({
