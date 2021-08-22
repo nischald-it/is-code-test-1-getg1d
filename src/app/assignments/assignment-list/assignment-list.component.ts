@@ -54,11 +54,12 @@ export class AssignmentListComponent implements OnInit, OnDestroy {
           return m;
 
         })
-
+        let currentFilter = this.getFilter();
         this.dataSource = new MatTableDataSource<AssignmentDetail>(assignmentDetails);
         this.dataSource.filter
         this.setPaginator();
         this.setSort();
+        this.setFilter(currentFilter);
       })
 
 
@@ -80,6 +81,13 @@ export class AssignmentListComponent implements OnInit, OnDestroy {
   applyFilter(event: Event) {
     let filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  getFilter() {
+    return this.dataSource.filter;
+  }
+  setFilter(currentFilter) {
+    this.dataSource.filter = currentFilter.trim().toLowerCase();
   }
 
   onDeleteAssignment(event, assignmentDetail: AssignmentDetail) {

@@ -34,9 +34,11 @@ export class CameraListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((cameras: Camera[]) => {
         this.nextId = Math.max(...cameras.map(c => c.id)) + 1;
+        let currentFilter = this.getFilter();
         this.dataSource = new MatTableDataSource<Camera>(cameras);
         this.setPaginator();
         this.setSort();
+        this.setFilter(currentFilter);
       })
 
   }
@@ -54,6 +56,13 @@ export class CameraListComponent implements OnInit, OnDestroy {
       this.dataSource.sort = this.sort;
     }
   }
+  getFilter() {
+    return this.dataSource.filter;
+  }
+  setFilter(currentFilter) {
+    this.dataSource.filter = currentFilter.trim().toLowerCase();
+  }
+
 
 
   applyFilter(event: Event) {
