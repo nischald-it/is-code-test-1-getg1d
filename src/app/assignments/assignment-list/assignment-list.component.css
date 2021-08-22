@@ -13,9 +13,13 @@ table {
     padding: 10px;
   }
 
-    .mat-column-name {
-        width: 70%;
+    .mat-column-vehicleName {
+        width: 40%;
     }
+    .mat-column-deviceNo {
+      width: 40%;
+  }
+
 
     button {
         margin: 10px;        

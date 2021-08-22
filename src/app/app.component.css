@@ -2,10 +2,10 @@ p {
   font-family: Lato;
 }
 
-.main-content-div {
+/* .main-content-div {
   height: calc(100vh - 150px - 20px - 50px);
   overflow:scroll;
-}
+} */
 
 .main-header {
   height: 100px;

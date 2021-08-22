@@ -3,8 +3,6 @@ import { AssignmentsState } from "../states/application-state";
 import * as fromAssignment from '../reducers/assignment.reducers';
 
 export const selectAssignmentState = createFeatureSelector<AssignmentsState>('assignmentsState');
-// export const getAssignmentsStateInfo = (state: AssignmentsState) => state.entities;
-
 
 export const selectAllAssignments = createSelector(
   selectAssignmentState,
