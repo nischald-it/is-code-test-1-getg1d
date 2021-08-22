@@ -21,7 +21,7 @@ import { AssignmentDeleteDialogComponent } from "./assignments/assignment-delete
 import {ReactiveFormsModule} from "@angular/forms";
 import { AssignmentAddDialogComponent } from "./assignments/assignment-add-dialog.component";
 import { NavigationComponent } from "./navigation.component";
-import { VehicleDeleteDialogComponent } from './vehicles/vehicle-delete-dialog/vehicle-delete-dialog.component';
+import { VehicleAddDialogComponent } from './vehicles/vehicle-add-dialog/vehicle-add-dialog.component';
 
 @NgModule({
   imports: [BrowserModule, CommonModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, MaterialModule,
@@ -32,8 +32,8 @@ import { VehicleDeleteDialogComponent } from './vehicles/vehicle-delete-dialog/v
     // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }) 
     ],
   providers:[{provide: APP_BASE_HREF, useValue: '/'}],
-  entryComponents: [AssignmentDeleteDialogComponent, AssignmentAddDialogComponent],
-  declarations: [AppComponent, NavigationComponent, VehicleListComponent, AssignmentListComponent,AssignmentDeleteDialogComponent, AssignmentAddDialogComponent, VehicleDeleteDialogComponent],
+  entryComponents: [AssignmentDeleteDialogComponent, AssignmentAddDialogComponent, VehicleAddDialogComponent],
+  declarations: [AppComponent, NavigationComponent, VehicleListComponent, AssignmentListComponent,AssignmentDeleteDialogComponent, AssignmentAddDialogComponent, VehicleAddDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -19,11 +19,11 @@ export class AssignmentDeleteDialogComponent implements OnInit {
     description: string = 'Unassign Camera';
     deviveNo: string = 'Temp Devive No';
     vehicleName: string = 'Temp Vehicle Name';
-    form: FormGroup;
+    // form: FormGroup;
     currentAssignmentDetail: AssignmentDetail;
 
     constructor(
-        private fb: FormBuilder,
+        // private fb: FormBuilder,
         private data: DataService,
         private store: Store<ApplicationState> ,
         private dialogRef: MatDialogRef<AssignmentDeleteDialogComponent>,
@@ -33,12 +33,12 @@ export class AssignmentDeleteDialogComponent implements OnInit {
         this.vehicleName = assignementDetail.vehicleName
         this.currentAssignmentDetail = {...assignementDetail};
 
-        this.form = fb.group({
-            // description: [course.description, Validators.required],
-            // category: [course.category, Validators.required],
-            // longDescription: [course.longDescription,Validators.required],
-            // promo: [course.promo, []]
-        });
+        // this.form = fb.group({
+        //     // description: [course.description, Validators.required],
+        //     // category: [course.category, Validators.required],
+        //     // longDescription: [course.longDescription,Validators.required],
+        //     // promo: [course.promo, []]
+        // });
     }
 
     ngOnInit() {

@@ -1,19 +1,18 @@
-import { DataSource } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { DataService } from '../services/data.service';
+import { Observable, Subject } from 'rxjs';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { select, Store } from '@ngrx/store';
-import { ApplicationState, VehiclesState } from '../store/states/application-state';
-import { AllVehicleRequested, VehicleSaved } from '../store/actions/vehicle.actions.index';
+import { ApplicationState } from '../store/states/application-state';
+import { AllVehicleRequested } from '../store/actions/vehicle.actions.index';
 import { Vehicle } from '../models/vehicle.model';
 import { selectAllVehicles } from '../store/selectors/vehicle.selectors';
-import { Update } from '@ngrx/entity';
 import { Router } from '@angular/router';
-import { catchError, takeUntil } from 'rxjs/operators';
+import {  takeUntil } from 'rxjs/operators';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { VehicleAddDialogComponent } from './vehicle-add-dialog/vehicle-add-dialog.component';
 
 export interface PeriodicElement {
   name: string;
@@ -21,20 +20,6 @@ export interface PeriodicElement {
   weight: number;
   symbol: string;
 }
-
-
-// const ELEMENT_DATA: Vehicle[] = [
-//   {id: 1, name: 'Hydrogen'},
-//   {id: 2, name: 'Helium'},
-//   {id: 3, name: 'Lithium'},
-//   {id: 4, name: 'Beryllium'},
-//   {id: 5, name: 'Boron'},
-//   {id: 6, name: 'Carbon'},
-//   {id: 7, name: 'Nitrogen'},
-//   {id: 8, name: 'Oxygen'},
-//   {id: 9, name: 'Fluorine'},
-//   {id: 10, name: 'Neon'},
-// ];
 
 @Component({
   selector: 'app-vehicles',
@@ -48,54 +33,27 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   vehicles$: Observable<Vehicle[]>;
   destroy$: Subject<boolean> = new Subject<boolean>();
   
-  constructor(private store: Store<ApplicationState> , private router: Router) { }
+  constructor(private store: Store<ApplicationState> , private router: Router, private dialog: MatDialog) { }
   displayedColumns: string[] = ['id', 'name', 'EditDelete'];
   dataSource : MatTableDataSource<Vehicle> = new MatTableDataSource<Vehicle>();
   filterValue: string;
-  // dataToDisplay = [...ELEMENT_DATA];
-
-  //dataSource = new ExampleDataSource(this.dataToDisplay);
-
-  // dataSource = new MatTableDataSource<Vehicle>(ELEMENT_DATA);
-  // getVehicles(): Observable<Vehicle[]> {
-  //   return this.data.get<Vehicle[]>("vehicles");
-  // }
+  nextId: number;
 
   ngOnInit(): void {
 
     
-
-    this.store.dispatch(new AllVehicleRequested());
-    // this.getVehicles().subscribe((v) => {
-    //   this.store.dispatch(new AllVehicleRequested());
-    // }); 
-    
+    this.store.dispatch(new AllVehicleRequested());  
     this.vehicles$ = this.store.pipe(select(selectAllVehicles));
 
     this.vehicles$
      .pipe(takeUntil(this.destroy$))
-     .subscribe((data: Vehicle[]) => {
-      this.dataSource = new MatTableDataSource<Vehicle>(data);
+     .subscribe((vehicles: Vehicle[]) => {
+      this.nextId = Math.max(...vehicles.map(v => v.id)) + 1;
+      this.dataSource = new MatTableDataSource<Vehicle>(vehicles);
       this.setPaginator();
       this.setSort();
     })  
 
-    // const vehicle: Update<Vehicle> = {
-    //   id: 2,
-    //   changes: {
-    //     name: 'Test Vehicle',
-    //     cameraId: 101
-    //   }
-    // };
-
-    const vehicle: Vehicle =   {
-      id: 2,
-        name: 'Test Vehicle',
-        cameraId: 101
-
-    };
-
-    this.store.dispatch(new VehicleSaved({vehicle}));
   }
   ngAfterViewInit() {
     this.setPaginator();
@@ -118,8 +76,19 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  goToAssignments() {
-    this.router.navigateByUrl("/assignments");
+  onAddVehicle() {
+    const dialogConfig = new MatDialogConfig();
+  
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '800px';
+
+    dialogConfig.data =  this.nextId;
+  
+ 
+    const dialogRef = this.dialog.open(VehicleAddDialogComponent,
+        dialogConfig);
+  
   }
 
   ngOnDestroy() {
@@ -129,24 +98,3 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
 }
 
-
-// class ExampleDataSource extends DataSource<PeriodicElement> {
-//   private _dataStream = new ReplaySubject<PeriodicElement[]>();
-
-//   constructor(initialData: PeriodicElement[]) {
-//     super();
-//     this.setData(initialData);
-//   }
-
-//   connect(): Observable<PeriodicElement[]> {
-//     return this._dataStream;
-//   }
-
-//   disconnect() {}
-
-//   setData(data: PeriodicElement[]) {
-//     this._dataStream.next(data);
-//   }
-
-
-// }
