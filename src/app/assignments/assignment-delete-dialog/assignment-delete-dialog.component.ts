@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { AssignmentDetail } from "../dto/assignmentDisplay.model";
-import { AssignmentResponse } from "../models/assignment.model";
-import { StoreService } from "../services/store.service";
-import { DataManagementService } from "../services/data-management.service";
+import { AssignmentDetail } from "../../dto/assignmentDisplay.model";
+import { AssignmentResponse } from "../../models/assignment.model";
+import { StoreService } from "../../services/store.service";
+import { DataManagementService } from "../../services/data-management.service";
 
 @Component({
     selector: 'assignment-delete-dialog',

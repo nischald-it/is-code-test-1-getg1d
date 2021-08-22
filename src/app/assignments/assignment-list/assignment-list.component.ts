@@ -1,30 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 
-import { combineLatest, forkJoin, Observable, ReplaySubject, Subject } from 'rxjs';
-import { DataService } from '../services/data.service';
+import { Subject } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { select, Store } from '@ngrx/store';
-import { ApplicationState, VehiclesState } from '../store/states/application-state';
-import { AllVehicleRequested, VehicleSaved } from '../store/actions/vehicle.actions.index';
-import { Vehicle } from '../models/vehicle.model';
-import { selectAllVehicles } from '../store/selectors/vehicle.selectors';
-import { Update } from '@ngrx/entity';
-import { selectAllActiveAssignments, selectAllAssignments } from '../store/selectors/assignment.selectors';
-import { Assignment, AssignmentRequest, AssignmentResponse } from '../models/assignment.model';
-import { AllAssignmentRequested } from '../store/actions/assignment.actions.index';
-import { map, takeUntil } from 'rxjs/operators';
-import { AssignmentDetail } from '../dto/assignmentDisplay.model';
-import { AllCameraRequested } from '../store/actions/camera.actions.index';
-import { Camera } from '../models/camera.model';
-import { selectAllCameras } from '../store/selectors/camera.selectors';
+import { takeUntil } from 'rxjs/operators';
+import { AssignmentDetail } from '../../dto/assignmentDisplay.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AssignmentDeleteDialogComponent } from './assignment-delete-dialog.component';
-import { AssignmentAddDialogComponent } from './assignment-add-dialog.component';
-import { StoreService } from '../services/store.service';
+import { StoreService } from '../../services/store.service';
+import { AssignmentDeleteDialogComponent } from '../assignment-delete-dialog/assignment-delete-dialog.component';
+import { AssignmentAddDialogComponent } from '../assignment-add-dialog/assignment-add-dialog.component';
 
 
 export interface PeriodicElement {
@@ -47,15 +34,11 @@ export class AssignmentListComponent implements OnInit, OnDestroy {
   filterValue: string;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private store: Store<ApplicationState>, private dialog: MatDialog, private storeService: StoreService) { }
+  constructor(private dialog: MatDialog, private storeService: StoreService) { }
   displayedColumns: string[] = ['id', 'vehicleName', 'deviceNo', 'crud'];
   dataSource: MatTableDataSource<AssignmentDetail> = new MatTableDataSource<AssignmentDetail>();
 
   ngOnInit(): void {
-
-    this.store.dispatch(new AllVehicleRequested());
-    this.store.dispatch(new AllAssignmentRequested());
-    this.store.dispatch(new AllCameraRequested());
 
     this.storeService.getAllEntities()
       .pipe(takeUntil(this.destroy$))

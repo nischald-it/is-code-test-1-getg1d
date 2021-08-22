@@ -1,29 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { Vehicle } from '../models/vehicle.model';
-import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { VehicleAddDialogComponent } from './vehicle-add-dialog/vehicle-add-dialog.component';
-import { StoreService } from '../services/store.service';
-
-export interface PeriodicElement {
-  name: string;
-  id: number;
-  weight: number;
-  symbol: string;
-}
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Camera } from 'src/app/models/camera.model';
+import { StoreService } from 'src/app/services/store.service';
+import { CameraAddDialogComponent } from '../camera-add-dialog/camera-add-dialog.component';
 
 @Component({
-  selector: 'app-vehicles',
-  templateUrl: './vehicle-list.component.html',
-  styleUrls: ['./vehicle-list.component.css']
+  selector: 'app-camera-list',
+  templateUrl: './camera-list.component.html',
+  styleUrls: ['./camera-list.component.css']
 })
-export class VehicleListComponent implements OnInit, OnDestroy {
+export class CameraListComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -31,18 +23,18 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
   constructor(private storeService: StoreService, private router: Router, private dialog: MatDialog) { }
 
-  displayedColumns: string[] = ['id', 'name', 'EditDelete'];
-  dataSource: MatTableDataSource<Vehicle> = new MatTableDataSource<Vehicle>();
+  displayedColumns: string[] = ['id', 'deviceNo', 'EditDelete'];
+  dataSource: MatTableDataSource<Camera> = new MatTableDataSource<Camera>();
   filterValue: string;
   nextId: number;
 
   ngOnInit(): void {
 
-    this.storeService.getAllVehicles()
+    this.storeService.getAllCameras()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((vehicles: Vehicle[]) => {
-        this.nextId = Math.max(...vehicles.map(v => v.id)) + 1;
-        this.dataSource = new MatTableDataSource<Vehicle>(vehicles);
+      .subscribe((cameras: Camera[]) => {
+        this.nextId = Math.max(...cameras.map(c => c.id)) + 1;
+        this.dataSource = new MatTableDataSource<Camera>(cameras);
         this.setPaginator();
         this.setSort();
       })
@@ -69,7 +61,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  onAddVehicle() {
+  onAddCamera() {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -79,7 +71,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     dialogConfig.data = this.nextId;
 
 
-    const dialogRef = this.dialog.open(VehicleAddDialogComponent,
+    const dialogRef = this.dialog.open(CameraAddDialogComponent,
       dialogConfig);
 
   }
@@ -90,4 +82,5 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   }
 
 }
+
 

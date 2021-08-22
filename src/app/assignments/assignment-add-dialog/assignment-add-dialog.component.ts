@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { AssignmentInit } from "../dto/assignmentInit.model";
-import { AssignmentResponse } from "../models/assignment.model";
-import { Camera } from "../models/camera.model";
-import { Vehicle } from "../models/vehicle.model";
-import { DataManagementService } from "../services/data-management.service";
-import { StoreService } from "../services/store.service";
+import { StoreService } from "../../services/store.service";
+import { AssignmentInit } from "../../dto/assignmentInit.model";
+import { AssignmentResponse } from "../../models/assignment.model";
+import { Camera } from "../../models/camera.model";
+import { Vehicle } from "../../models/vehicle.model";
+import { DataManagementService } from "../../services/data-management.service";
+
 
 @Component({
     selector: 'assignment-add-dialog',

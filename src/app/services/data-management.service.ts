@@ -22,4 +22,7 @@ export class DataManagementService {
     return this.data.post("vehicles/:id", { id: vehicleId }, { name: vehicleName, cameraId: null })
   }
 
+  addCamera(cameraId: number, deviceNo: string) {
+    return this.data.post("cameras/:id", { id: cameraId }, { name: deviceNo, cameraId: null })
+  }
 }

@@ -5,7 +5,8 @@ import { AssignmentResponse } from '../models/assignment.model';
 import { Camera } from '../models/camera.model';
 import { Vehicle } from '../models/vehicle.model';
 import { AllAssignmentRequested, AssignmentDeleted } from '../store/actions/assignment.actions.index';
-import { VehicleSaved } from '../store/actions/vehicle.actions.index';
+import { AllCameraRequested, CameraSaved } from '../store/actions/camera.actions.index';
+import { AllVehicleRequested, VehicleSaved } from '../store/actions/vehicle.actions.index';
 import { selectAllActiveAssignments } from '../store/selectors/assignment.selectors';
 import { selectAllCameras } from '../store/selectors/camera.selectors';
 import { selectAllVehicles } from '../store/selectors/vehicle.selectors';
@@ -27,11 +28,20 @@ export class StoreService {
 
   }
 
+  perpareStore() {
+    this.store.dispatch(new AllVehicleRequested());
+    this.store.dispatch(new AllAssignmentRequested());
+    this.store.dispatch(new AllCameraRequested());
+  }
+
   getAllEntities() : Observable<[AssignmentResponse[],Vehicle[], Camera[]]> {
     return combineLatest([this.assignments$, this.vehicles$, this.cameras$])
   }
   getAllVehicles() : Observable< Vehicle[]> {
     return this.vehicles$;
+  }
+  getAllCameras() : Observable< Camera[]> {
+    return this.cameras$;
   }
 
   refreshAssignment()  {
@@ -43,5 +53,10 @@ export class StoreService {
 
   SaveVehicle(vehicle : Vehicle) {
     return this.store.dispatch(new VehicleSaved({vehicle}));
+  }
+
+  
+  SaveCamera(camera : Camera) {
+    return this.store.dispatch(new CameraSaved({camera}));
   }
 }
