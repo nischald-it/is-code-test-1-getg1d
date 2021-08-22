@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DataManagementService } from 'src/app/services/data-management.service';
-import { StoreService } from 'src/app/services/store.service';
-import { Camera } from 'src/app/models/camera.model';
+import { DataManagementService } from '../../services/data-management.service';
+import { StoreService } from '../../services/store.service';
+import { Camera } from '../../models/camera.model';
 
 @Component({
   selector: 'app-camera-add-dialog',
