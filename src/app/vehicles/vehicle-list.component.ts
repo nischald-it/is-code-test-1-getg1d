@@ -1,6 +1,6 @@
 import { DataSource } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { DataService } from '../services/data.service';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,6 +13,7 @@ import { Vehicle } from '../models/vehicle.model';
 import { selectAllVehicles } from '../store/selectors/vehicle.selectors';
 import { Update } from '@ngrx/entity';
 import { Router } from '@angular/router';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 export interface PeriodicElement {
   name: string;
@@ -40,15 +41,16 @@ export interface PeriodicElement {
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css']
 })
-export class VehicleListComponent implements OnInit {
+export class VehicleListComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   vehicles$: Observable<Vehicle[]>;
+  destroy$: Subject<boolean> = new Subject<boolean>();
   
   constructor(private store: Store<ApplicationState> , private router: Router) { }
   displayedColumns: string[] = ['id', 'name', 'EditDelete'];
-  dataSource : MatTableDataSource<Vehicle>;
+  dataSource : MatTableDataSource<Vehicle> = new MatTableDataSource<Vehicle>();
   filterValue: string;
   // dataToDisplay = [...ELEMENT_DATA];
 
@@ -70,12 +72,12 @@ export class VehicleListComponent implements OnInit {
     
     this.vehicles$ = this.store.pipe(select(selectAllVehicles));
 
-    this.vehicles$.subscribe((data: Vehicle[]) => {
+    this.vehicles$
+     .pipe(takeUntil(this.destroy$))
+     .subscribe((data: Vehicle[]) => {
       this.dataSource = new MatTableDataSource<Vehicle>(data);
-      this.filterData();
       this.setPaginator();
       this.setSort();
-
     })  
 
     // const vehicle: Update<Vehicle> = {
@@ -112,40 +114,39 @@ export class VehicleListComponent implements OnInit {
 
 
   applyFilter(event: Event) {
-    this.filterValue = (event.target as HTMLInputElement).value;
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.filterData();
+    let filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  filterData() {
-    if(this.filterValue) {
-      this.dataSource.filter = this.filterValue.trim().toLowerCase();
-    }
-    
-  }
+
   goToAssignments() {
     this.router.navigateByUrl("/assignments");
   }
 
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
 }
 
 
-class ExampleDataSource extends DataSource<PeriodicElement> {
-  private _dataStream = new ReplaySubject<PeriodicElement[]>();
+// class ExampleDataSource extends DataSource<PeriodicElement> {
+//   private _dataStream = new ReplaySubject<PeriodicElement[]>();
 
-  constructor(initialData: PeriodicElement[]) {
-    super();
-    this.setData(initialData);
-  }
+//   constructor(initialData: PeriodicElement[]) {
+//     super();
+//     this.setData(initialData);
+//   }
 
-  connect(): Observable<PeriodicElement[]> {
-    return this._dataStream;
-  }
+//   connect(): Observable<PeriodicElement[]> {
+//     return this._dataStream;
+//   }
 
-  disconnect() {}
+//   disconnect() {}
 
-  setData(data: PeriodicElement[]) {
-    this._dataStream.next(data);
-  }
+//   setData(data: PeriodicElement[]) {
+//     this._dataStream.next(data);
+//   }
 
 
-}
+// }

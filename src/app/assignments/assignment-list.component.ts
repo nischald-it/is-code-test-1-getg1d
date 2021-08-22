@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 
-import { combineLatest, forkJoin, Observable, ReplaySubject } from 'rxjs';
+import { combineLatest, forkJoin, Observable, ReplaySubject, Subject } from 'rxjs';
 import { DataService } from '../services/data.service';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,7 +16,7 @@ import { Update } from '@ngrx/entity';
 import { selectAllActiveAssignments, selectAllAssignments } from '../store/selectors/assignment.selectors';
 import { Assignment, AssignmentRequest, AssignmentResponse } from '../models/assignment.model';
 import { AllAssignmentRequested } from '../store/actions/assignment.actions.index';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { AssignmentDetail } from '../dto/assignmentDisplay.model';
 import { AllCameraRequested } from '../store/actions/camera.actions.index';
 import { Camera } from '../models/camera.model';
@@ -24,6 +24,7 @@ import { selectAllCameras } from '../store/selectors/camera.selectors';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AssignmentDeleteDialogComponent } from './assignment-delete-dialog.component';
 import { AssignmentAddDialogComponent } from './assignment-add-dialog.component';
+import * as _ from 'lodash';
 
 export interface PeriodicElement {
   name: string;
@@ -60,7 +61,7 @@ export interface PeriodicElement {
 
 // }
 
-export class AssignmentListComponent implements OnInit {
+export class AssignmentListComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -68,6 +69,7 @@ export class AssignmentListComponent implements OnInit {
   vehicles$: Observable<Vehicle[]>;
   cameras$: Observable<Camera[]>;
   filterValue: string;
+  destroy$: Subject<boolean> = new Subject<boolean>();
   
   constructor(private store: Store<ApplicationState> ,private dialog: MatDialog) { }
   displayedColumns: string[] = ['id', 'vehicleName', 'deviceNo', 'crud'];
@@ -75,7 +77,7 @@ export class AssignmentListComponent implements OnInit {
 
   //dataSource = new ExampleDataSource(this.dataToDisplay);
 
-  dataSource : MatTableDataSource<AssignmentDetail>;
+  dataSource : MatTableDataSource<AssignmentDetail> = new MatTableDataSource<AssignmentDetail>();
   // getVehicles(): Observable<Vehicle[]> {
   //   return this.data.get<Vehicle[]>("vehicles");
   // }
@@ -96,6 +98,7 @@ export class AssignmentListComponent implements OnInit {
     // })  
 
     combineLatest([this.assignments$, this.vehicles$, this.cameras$])
+    .pipe(takeUntil(this.destroy$))
     .subscribe((res) => {
       var assingments = res[0];
       var vehicles = res[1];
@@ -110,7 +113,8 @@ export class AssignmentListComponent implements OnInit {
       })
 
       this.dataSource = new MatTableDataSource<AssignmentDetail>(assignmentDetails);
-      this.filterData();
+      this.dataSource.filter
+      // this.filterData();
       this.setPaginator();
       this.setSort();
 
@@ -134,16 +138,17 @@ export class AssignmentListComponent implements OnInit {
     }   
   }
   applyFilter(event: Event) {
-    this.filterValue = (event.target as HTMLInputElement).value;
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.filterData();
+    let filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.filterValue = filterValue.trim().toLowerCase();
+    // this.filterData();
   }
-  filterData() {
-    if(this.filterValue) {
-      this.dataSource.filter = this.filterValue.trim().toLowerCase();
-    }
+  // filterData() {
+  //   if(!_.isUndefined(this.filterValue)) {
+  //     this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  //   }
     
-  }
+  // }
 
   onDeleteAssignment(event, assignmentDetail:AssignmentDetail) {
 
@@ -173,6 +178,11 @@ onAddAssignment() {
   const dialogRef = this.dialog.open(AssignmentAddDialogComponent,
       dialogConfig);
 
+}
+
+ngOnDestroy() {
+  this.destroy$.next(true);
+  this.destroy$.unsubscribe();
 }
 
 }

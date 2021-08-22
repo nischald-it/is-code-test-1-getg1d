@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { select, Store } from "@ngrx/store";
-import { combineLatest, Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { combineLatest, Observable, Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 import { AssignmentResponse } from "../models/assignment.model";
 import { Camera } from "../models/camera.model";
 import { Vehicle } from "../models/vehicle.model";
@@ -19,7 +19,7 @@ import { ApplicationState } from "../store/states/application-state";
     templateUrl: './assignment-add-dialog.component.html',
     styleUrls: ['./assignment-add-dialog.component.css']
 })
-export class AssignmentAddDialogComponent implements OnInit {
+export class AssignmentAddDialogComponent implements OnInit, OnDestroy {
     form: FormGroup;
     description: string = "Assign Camera";
     assignmentInit: AssignmentInit = new AssignmentInit();
@@ -28,7 +28,8 @@ export class AssignmentAddDialogComponent implements OnInit {
     assignments$: Observable<AssignmentResponse[]>;
     availableVehicles: Vehicle[];
     availableCameras: Camera[];
-    
+    destroy$: Subject<boolean> = new Subject<boolean>();
+
     constructor(
         private fb: FormBuilder,
         private data: DataService,
@@ -47,7 +48,9 @@ export class AssignmentAddDialogComponent implements OnInit {
         this.cameras$ = this.store.pipe(select(selectAllCameras));
         this.assignments$ = this.store.pipe(select(selectAllActiveAssignments));
 
-        combineLatest( [this.vehicles$,this.cameras$,this.assignments$]).subscribe((res) => {
+        combineLatest( [this.vehicles$,this.cameras$,this.assignments$])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
             let vehicles: Vehicle[] = res[0];
             let cameras: Camera[] = res[1];
             let assignments: AssignmentResponse[] = res[2];
@@ -72,7 +75,6 @@ export class AssignmentAddDialogComponent implements OnInit {
         this.data.post("assignments", {} ,
         {cameraId: +formValue.vehicle, vehicleId: +formValue.vehicle}
         )
-        .pipe(tap(r=>console.log(JSON.stringify(r))))
         .subscribe(
             () => {
                 // let assignmentResponse = new AssignmentResponse();
@@ -85,6 +87,11 @@ export class AssignmentAddDialogComponent implements OnInit {
                 this.dialogRef.close();
             });
     }
+
+    ngOnDestroy() {
+        this.destroy$.next(true);
+        this.destroy$.unsubscribe();
+      }
 
     // assign() {
     //     this.data.post("assignments", {}, {cameraId: 0, vehicleId: 1}).pipe(tap(r=>console.log(r))).subscribe();
