@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Effect, Actions, ofType } from "@ngrx/effects";
 import { select, Store } from "@ngrx/store";
 import { filter, map, mergeMap, withLatestFrom } from "rxjs/operators";
+import { DataManagementService } from "../../services/data-management.service";
 import { Vehicle } from "../../models/vehicle.model";
 import { DataService } from "../../services/data.service";
 import { AllVehiclesLoaded, VehicleActionTypes } from "../actions/vehicle.actions.index";
@@ -10,7 +11,7 @@ import { ApplicationState } from "../states/application-state";
 
 @Injectable()
 export class VehicleEffects {
-    constructor(private actions$: Actions, private data: DataService, private store: Store<ApplicationState>) {
+    constructor(private actions$: Actions, private dataManagementService: DataManagementService, private store: Store<ApplicationState>) {
 
     }
 
@@ -20,7 +21,7 @@ export class VehicleEffects {
             ofType<AllVehiclesLoaded>(VehicleActionTypes.AllVehicleRequested),
             withLatestFrom(this.store.pipe(select(allVehiclesLoaded))),
             filter(([action, allVehiclesLoaded]) => !allVehiclesLoaded),
-            mergeMap(() => this.data.get<Vehicle[]>("vehicles")),
+            mergeMap(() => this.dataManagementService.getVehicles()),
             map(vehicles => new AllVehiclesLoaded({ vehicles }))
         );
 }
