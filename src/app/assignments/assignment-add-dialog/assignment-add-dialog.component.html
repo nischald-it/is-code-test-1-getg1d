@@ -3,7 +3,7 @@
     <mat-dialog-content [formGroup]="form"  class="d-flex flex-column flex-wrap">
 
 
-        <mat-form-field >
+        <mat-form-field class="p-2">
 
             <mat-select placeholder="Select Vehicle" formControlName="vehicle">
                 <mat-option *ngFor="let vehicle of availableVehicles" value="{{vehicle.id}}">
@@ -14,7 +14,7 @@
 
         </mat-form-field>
 
-        <mat-form-field >
+        <mat-form-field class="p-2">
 
             <mat-select placeholder="Select Camera" formControlName="camera">
                 <mat-option *ngFor="let camera of availableCameras" value="{{camera.id}}">
