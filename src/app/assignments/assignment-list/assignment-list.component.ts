@@ -111,7 +111,7 @@ export class AssignmentListComponent implements OnInit, OnDestroy {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '800px';
+    dialogConfig.width = '400px';
 
     const dialogRef = this.dialog.open(AssignmentAddDialogComponent,
       dialogConfig);
